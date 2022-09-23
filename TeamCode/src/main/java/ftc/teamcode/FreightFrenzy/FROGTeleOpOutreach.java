@@ -412,11 +412,10 @@ public class FROGTeleOpOutreach extends LinearOpMode {
                 */
            // }
 
-
             MecanumDrive.cartesian(Globals.robot,
-                    -gamepad1.left_stick_y, // Main
-                    gamepad1.left_stick_x , // Strafe
-                    gamepad1.right_stick_x * .85); // Turn
+                    -gamepad1.left_stick_y * .5, // Main
+                    gamepad1.left_stick_x * .5, // Strafe
+                    gamepad1.right_stick_x * .35); // Turn
 
             if(LiftUp.shouldToggle(gamepad1.right_bumper )){Globals.LiftLevel = Globals.LiftLevel+1;}
             if(LiftDown.shouldToggle(gamepad1.left_bumper)){Globals.LiftLevel = Globals.LiftLevel-1;}
