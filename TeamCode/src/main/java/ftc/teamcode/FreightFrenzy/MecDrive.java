@@ -6,18 +6,18 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
+//import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.AccerlationControlledDrivetrainPowerGeneratorForAuto;
 import org.firstinspires.ftc.teamcode.Globals;
 import org.firstinspires.ftc.teamcode.TrackingWheelIntegrator;
 import org.firstinspires.ftc.teamcode.control.MecanumDrive;
-import org.firstinspires.ftc.teamcode.drivers.MaxSonarI2CXL;
+//import org.firstinspires.ftc.teamcode.drivers.MaxSonarI2CXL;
 import org.firstinspires.ftc.teamcode.robotComponents.drivebase.SkyStoneDriveBase;
 import org.firstinspires.ftc.teamcode.trajectory.StateMTrajectory;
 
-import ftc.teamcode.Toggler;
+//import ftc.teamcode.Toggler;
 
 @TeleOp
 public class MecDrive extends LinearOpMode {
@@ -27,6 +27,7 @@ public class MecDrive extends LinearOpMode {
         private DcMotorEx FR;
         private DcMotorEx RL;
         private DcMotorEx RR;
+        private Servo servo_test;
         private double leftStickX;
         private double leftStickY;
         private double rightStickX;
@@ -38,10 +39,9 @@ public class MecDrive extends LinearOpMode {
         TrackingWheelIntegrator trackingWheelIntegrator = new TrackingWheelIntegrator();
 
 
-        LynxDcMotorController ctrl;
+        // LynxDcMotorController ctrl;
         LynxModule module;
 
-        //private Servo Tpusher;
 
         // private TouchSensor touch;
         // private RevTouchSensor touch;'
@@ -55,11 +55,12 @@ public class MecDrive extends LinearOpMode {
 
             trackingWheelIntegrator = new TrackingWheelIntegrator();
 
-            //maping out the robot
+            //mapping out the robot
             FL= (DcMotorEx) hardwareMap.get(DcMotor.class, "FL");
             FR= (DcMotorEx) hardwareMap.get(DcMotor.class, "FR");
             RL= (DcMotorEx) hardwareMap.get(DcMotor.class, "RL");
             RR= (DcMotorEx) hardwareMap.get(DcMotor.class, "RR");
+            servo_test= (Servo) hardwareMap.get(Servo.class, "servo_test");
             skyStoneDriveBase = new SkyStoneDriveBase();
             skyStoneDriveBase.init(hardwareMap);
             skyStoneDriveBase.resetEncoders();
@@ -85,8 +86,8 @@ public class MecDrive extends LinearOpMode {
 
             while (opModeIsActive()) {
 
-                if (gamepad2.x) {         //If button is pressed Auto aline will run. if not normaly gamepad works
-                    if (AutomationLastState == false) {
+                if (gamepad2.x) {         //If button is pressed Auto aline will run. if not normally gamepad works
+                    if (!AutomationLastState) {
                         //clearEnc();
                         trackingWheelIntegrator.setFirstTrackingVal(0,0);
                         //buildTrajectory();
@@ -98,7 +99,7 @@ public class MecDrive extends LinearOpMode {
                 }
                 else {
                     runGamepad();
-                    if (AutomationLastState == true) {
+                    if (AutomationLastState) {
                         AutomationLastState = false;
                         Globals.robot.enableBrake(true);
                         Globals.robot.disablePID();
@@ -150,6 +151,8 @@ public class MecDrive extends LinearOpMode {
             }
 
              */
+
+            // This code sends data to the standard output about the motors/sticks
             /*
             telemetry.addData("Y-stick", gamepad1.left_stick_y);
             telemetry.addData("X-stick", gamepad1.left_stick_x);
@@ -162,11 +165,46 @@ public class MecDrive extends LinearOpMode {
             telemetry.addData("FR", FR.getCurrentPosition());
             telemetry.addData("RL", RL.getCurrentPosition());
             telemetry.addData("RR", RR.getCurrentPosition());
+            telemetry.addData("servo_position", servo_test.getPosition());
             telemetry.update();
+
+            // Edit this block to change the speed (always keep rightStickX below the others)
             MecanumDrive.cartesian(Globals.robot,
                     -leftStickY * .15, // Main
                     leftStickX * .15, // Strafe
                     rightStickX * .10); // Turn
+
+            if (gamepad1.right_bumper) {
+                servo_test.setPosition(.20);
+            }
+
+            if (!gamepad1.right_bumper) {
+                servo_test.setPosition(.60);
+            }
+
+            double FL_motor_rotations;
+            double FR_motor_rotations;
+            double RL_motor_rotations;
+            double RR_motor_rotations;
+
+            FL_motor_rotations = (FL.getCurrentPosition()/28) / 11.73 * 12;
+            FR_motor_rotations = (FL.getCurrentPosition()/28) / 11.73 * 12;
+            RL_motor_rotations = (FL.getCurrentPosition()/28) / 11.73 * 12;
+            RR_motor_rotations = (FL.getCurrentPosition()/28) / 11.73 * 12;
+
+            while (FL_motor_rotations < 31) {
+                FL_motor_rotations = (FL.getCurrentPosition()/28) / 11.73 * 12;
+                MecanumDrive.cartesian(Globals.robot, -.15, 0, 0);
+            }
+            while (FL_motor_rotations > 0) {
+                FL_motor_rotations = (FL.getCurrentPosition()/28) / 11.73 * 12;
+                MecanumDrive.cartesian(Globals.robot, 0, .15, 0);
+            }
+
+            telemetry.addData("FL inches ", FL_motor_rotations);
+            telemetry.addData("FR inches ", FR_motor_rotations);
+            telemetry.addData("RL inches ", RL_motor_rotations);
+            telemetry.addData("RR inches ", RR_motor_rotations);
 
 
     }
