@@ -1,19 +1,21 @@
 package ftc.teamcode.FreightFrenzy;
 
-import com.qualcomm.hardware.lynx.LynxDcMotorController;
+//import com.qualcomm.hardware.lynx.LynxDcMotorController;
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 //import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.I2cDevice;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.configuration.I2cSensor;
 
 import org.firstinspires.ftc.teamcode.AccerlationControlledDrivetrainPowerGeneratorForAuto;
 import org.firstinspires.ftc.teamcode.Globals;
 import org.firstinspires.ftc.teamcode.TrackingWheelIntegrator;
 import org.firstinspires.ftc.teamcode.control.MecanumDrive;
-//import org.firstinspires.ftc.teamcode.drivers.MaxSonarI2CXL;
+import org.firstinspires.ftc.teamcode.drivers.MaxSonarI2CXL;
 import org.firstinspires.ftc.teamcode.robotComponents.drivebase.SkyStoneDriveBase;
 import org.firstinspires.ftc.teamcode.trajectory.StateMTrajectory;
 
@@ -31,6 +33,7 @@ public class MecDrive extends LinearOpMode {
         private double leftStickX;
         private double leftStickY;
         private double rightStickX;
+        MaxSonarI2CXL sensor;
         StateMTrajectory trajectory;
         SkyStoneDriveBase skyStoneDriveBase;
 
@@ -44,7 +47,7 @@ public class MecDrive extends LinearOpMode {
 
 
         // private TouchSensor touch;
-        // private RevTouchSensor touch;'
+        // private RevTouchSensor touch;
         // private DigitalChannel touch;
 
 
@@ -61,6 +64,7 @@ public class MecDrive extends LinearOpMode {
             RL= (DcMotorEx) hardwareMap.get(DcMotor.class, "RL");
             RR= (DcMotorEx) hardwareMap.get(DcMotor.class, "RR");
             servo_test= (Servo) hardwareMap.get(Servo.class, "servo_test");
+            sensor= (MaxSonarI2CXL) hardwareMap.get(MaxSonarI2CXL.class, "sensor");
             skyStoneDriveBase = new SkyStoneDriveBase();
             skyStoneDriveBase.init(hardwareMap);
             skyStoneDriveBase.resetEncoders();
@@ -165,7 +169,7 @@ public class MecDrive extends LinearOpMode {
             telemetry.addData("FR", FR.getCurrentPosition());
             telemetry.addData("RL", RL.getCurrentPosition());
             telemetry.addData("RR", RR.getCurrentPosition());
-            telemetry.addData("servo_position", servo_test.getPosition());
+            //telemetry.addData("servo_position", servo_test.getPosition());
             telemetry.update();
 
             // Edit this block to change the speed (always keep rightStickX below the others)
@@ -186,25 +190,44 @@ public class MecDrive extends LinearOpMode {
             double FR_motor_rotations;
             double RL_motor_rotations;
             double RR_motor_rotations;
+            double sensor_dist;
 
             FL_motor_rotations = (FL.getCurrentPosition()/28) / 11.73 * 12;
             FR_motor_rotations = (FL.getCurrentPosition()/28) / 11.73 * 12;
             RL_motor_rotations = (FL.getCurrentPosition()/28) / 11.73 * 12;
             RR_motor_rotations = (FL.getCurrentPosition()/28) / 11.73 * 12;
+            sensor_dist = sensor.getDistanceSync();
 
-            while (FL_motor_rotations < 31) {
-                FL_motor_rotations = (FL.getCurrentPosition()/28) / 11.73 * 12;
-                MecanumDrive.cartesian(Globals.robot, -.15, 0, 0);
-            }
-            while (FL_motor_rotations > 0) {
-                FL_motor_rotations = (FL.getCurrentPosition()/28) / 11.73 * 12;
-                MecanumDrive.cartesian(Globals.robot, 0, .15, 0);
-            }
+            //while (FL_motor_rotations < 23) {
+            //    FL_motor_rotations = (FL.getCurrentPosition()/28) / 11.73 * 12;
+            //    if (sensor.getDistanceSync() < 20) {
+            //        FL.setMotorDisable();
+            //        FR.setMotorDisable();
+            //        RL.setMotorDisable();
+            //        RR.setMotorDisable();
+
+            //    }
+            //    MecanumDrive.cartesian(Globals.robot, -.15, 0, 0);
+            //}
+            //while (FL_motor_rotations > 0) {
+            //    FL_motor_rotations = (FL.getCurrentPosition()/28) / 11.73 * 12;
+            //    if (sensor.getDistanceSync() < 20) {
+            //        FL.setMotorDisable();
+            //        FR.setMotorDisable();
+            //        RL.setMotorDisable();
+            //        RR.setMotorDisable();
+            //    }
+            //    MecanumDrive.cartesian(Globals.robot, 0, .15, 0);
+            //}
+
+            //while (sensor.getDistance())
 
             telemetry.addData("FL inches ", FL_motor_rotations);
             telemetry.addData("FR inches ", FR_motor_rotations);
             telemetry.addData("RL inches ", RL_motor_rotations);
             telemetry.addData("RR inches ", RR_motor_rotations);
+            telemetry.addData("Sensor reading", sensor_dist);
+
 
 
     }

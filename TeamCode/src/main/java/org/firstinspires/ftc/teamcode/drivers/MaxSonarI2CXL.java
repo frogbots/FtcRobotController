@@ -119,11 +119,11 @@ public class MaxSonarI2CXL extends I2cDeviceSynchDevice<I2cDeviceSynch>
         {
             if(numAttempts >= 3)
             {
-                //throw new RuntimeException("Ultrasonic sensor returned garbage data after 3 attempts, killing program");
+                throw new RuntimeException("Ultrasonic sensor returned garbage data after 3 attempts, killing program");
                 //Globals.CRITICAL_ERR_ABORT_NOW = true;
                 //Globals.requestOpModeStop();
-            //    throw new AbortAutoNowException("Ultrasonic sensor returned garbage data after 3 attempts, killing program");
-                return 0;
+                //throw new AbortAutoNowException("Ultrasonic sensor returned garbage data after 3 attempts, killing program");
+                //return 0;
             }
             else
             {
