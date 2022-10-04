@@ -30,6 +30,7 @@ public class MecDrive extends LinearOpMode {
         private double leftStickX;
         private double leftStickY;
         private double rightStickX;
+        private double rightTrigger;
         StateMTrajectory trajectory;
         SkyStoneDriveBase skyStoneDriveBase;
 
@@ -142,6 +143,27 @@ public class MecDrive extends LinearOpMode {
                 rightStickX = 0;
 
             }
+            double MS = 0;
+            double T = 0;
+
+            if(!gamepad1.right_bumper) {
+                MS = .15;
+                T = .10;
+            }
+            if(gamepad1.right_bumper) {
+                MS = 1;
+                T = 1;
+            }
+
+
+            MecanumDrive.cartesian(Globals.robot,
+                    -leftStickY * MS, // Main
+                    leftStickX * MS, // Strafe
+                    rightStickX * T); // Turn
+
+
+
+
             /*if (gamepad1.left_stick_y > .03 && gamepad1.left_stick_y < -.03) {
                 leftStickY = gamepad1.left_stick_y;
             }
@@ -162,11 +184,9 @@ public class MecDrive extends LinearOpMode {
             telemetry.addData("FR", FR.getCurrentPosition());
             telemetry.addData("RL", RL.getCurrentPosition());
             telemetry.addData("RR", RR.getCurrentPosition());
+            telemetry.addData("RRB" , gamepad1.right_bumper);
             telemetry.update();
-            MecanumDrive.cartesian(Globals.robot,
-                    -leftStickY * .15, // Main
-                    leftStickX * .15, // Strafe
-                    rightStickX * .10); // Turn
+
 
 
     }

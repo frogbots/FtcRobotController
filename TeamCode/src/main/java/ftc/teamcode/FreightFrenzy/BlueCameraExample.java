@@ -39,7 +39,7 @@ import ftc.teamcode.FreightFrenzy.TSEDetectionBlue;
  * original Android camera API
  */
 @TeleOp
-public class BlueCameraExample extends LinearOpMode
+public class  BlueCameraExample extends LinearOpMode
 {
     OpenCvCamera phoneCam;
 
