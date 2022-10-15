@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.trajectory;
 
 import org.firstinspires.ftc.teamcode.Globals;
 
-import ftc.teamcode.FreightFrenzy.FrogTeleOpFF;
 
 import static org.firstinspires.ftc.teamcode.Globals.ARML;
 import static org.firstinspires.ftc.teamcode.Globals.ARMR;

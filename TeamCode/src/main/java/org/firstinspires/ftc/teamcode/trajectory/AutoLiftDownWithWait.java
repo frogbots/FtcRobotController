@@ -4,7 +4,6 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.Globals;
 
-import ftc.teamcode.FreightFrenzy.FrogTeleOpFF;
 
 import static org.firstinspires.ftc.teamcode.Globals.ARML;
 import static org.firstinspires.ftc.teamcode.Globals.ARMR;
@@ -85,7 +84,6 @@ public class AutoLiftDownWithWait extends StateMachine<AutoLiftDownWithWait.Stat
                 Globals.Lift.setTargetPosition(0);
                 Globals.Lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 Globals.Lift.setPower(1);
-                FrogTeleOpFF.LiftGoDown = false;
                 if (getElapsedStateTime() > 1000) {
                     ARML.setPosition(.95);
                     ARMR.setPosition(.05);

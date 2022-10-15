@@ -4,7 +4,6 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.Globals;
 
-import ftc.teamcode.FreightFrenzy.FrogTeleOpFF;
 
 import static org.firstinspires.ftc.teamcode.Globals.ARML;
 import static org.firstinspires.ftc.teamcode.Globals.ARMR;
@@ -59,8 +58,6 @@ public class AutoLiftDownWithWaitTele extends StateMachine<AutoLiftDownWithWaitT
             }
             case TURRET:   {
                 HEXCLAW.setPosition(0);
-                FrogTeleOpFF.TurretTurn = true;
-                FrogTeleOpFF.TurretTARGET=1.29;
 
                 if (getElapsedStateTime() > 400) {
                     switchState(State.FLIP);
@@ -83,7 +80,6 @@ public class AutoLiftDownWithWaitTele extends StateMachine<AutoLiftDownWithWaitT
                 Globals.Lift.setTargetPosition(0);
                 Globals.Lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 Globals.Lift.setPower(1);
-                FrogTeleOpFF.LiftGoDown = false;
                 if (getElapsedStateTime() > 500) {
                     switchState(State.IDLE);
                 }

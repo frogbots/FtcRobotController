@@ -7,7 +7,6 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import org.firstinspires.ftc.teamcode.Globals;
 import org.firstinspires.ftc.teamcode.TrackingWheelIntegrator;
 
-import ftc.teamcode.FreightFrenzy.FreightFrenzyMainAutoBlue;
 
 
 

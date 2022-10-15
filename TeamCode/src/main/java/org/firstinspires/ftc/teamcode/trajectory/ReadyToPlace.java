@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode.trajectory;
 import org.firstinspires.ftc.teamcode.Globals;
 import org.firstinspires.ftc.teamcode.TrackingWheelIntegrator;
 
-import ftc.teamcode.FreightFrenzy.FreightFrenzyMainAutoBlueStateM;
 
 import static org.firstinspires.ftc.teamcode.trajectory.StateMachine.ReturnState.PROCEED;
 

@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode.trajectory;
 import org.firstinspires.ftc.teamcode.Globals;
 import org.firstinspires.ftc.teamcode.TrackingWheelIntegrator;
 
-import ftc.teamcode.FreightFrenzy.FreightFrenzyMainAutoRedStateM;
 
 import static org.firstinspires.ftc.teamcode.Globals.LastY;
 import static org.firstinspires.ftc.teamcode.trajectory.StateMachine.ReturnState.PROCEED;
@@ -57,7 +56,6 @@ public class AutoResetOdoWarehouse extends StateMachine<AutoResetOdoWarehouse.St
             case RESET: {
                 Globals.LastX = Globals.X;
                 LastY = Globals.Y;
-                FreightFrenzyMainAutoRedStateM.clearEnc();
                 if (LastY < 90){
                     LastY = 94;
                 }

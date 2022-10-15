@@ -4,8 +4,6 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.Globals;
 
-import ftc.teamcode.FreightFrenzy.FreightFrenzyMainAutoBlueStateM;
-import ftc.teamcode.FreightFrenzy.FrogTeleOpFF;
 
 
 import static org.firstinspires.ftc.teamcode.Globals.ARML;

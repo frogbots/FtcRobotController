@@ -21,11 +21,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.drivers.MaxSonarI2CXL;
 import org.firstinspires.ftc.teamcode.robotComponents.drivebase.SkyStoneDriveBase;
 
-import ftc.teamcode.FreightFrenzy.FreightFrenzyMainAutoBlue;
-import ftc.teamcode.FreightFrenzy.FreightFrenzyMainAutoBlueStateM;
-import ftc.teamcode.FreightFrenzy.FrogTeleOpFF;
-
-import static ftc.teamcode.FreightFrenzy.FreightFrenzyMainAutoBlueStateM.clearEnc;
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 
 public class Globals {
@@ -119,7 +114,6 @@ public class Globals {
     public static void ResetHX() {
         LastX =trackingWheelIntegrator.getX();
         LastY =trackingWheelIntegrator.getY();
-        FreightFrenzyMainAutoBlueStateM.clearEnc();
         trackingWheelIntegrator.SetX(0);
         trackingWheelIntegrator.SetY(LastY);
 

@@ -2,9 +2,7 @@ package org.firstinspires.ftc.teamcode.trajectory;
 
 import org.firstinspires.ftc.teamcode.Globals;
 
-import ftc.teamcode.FreightFrenzy.FrogTeleOpFF;
 
-import static ftc.teamcode.FreightFrenzy.FrogTeleOpFF.RotationIntake;
 import static java.lang.Thread.sleep;
 import static org.firstinspires.ftc.teamcode.Globals.ARML;
 import static org.firstinspires.ftc.teamcode.Globals.ARMR;
@@ -98,7 +96,6 @@ public class AutoTransfer extends StateMachine<AutoTransfer.State> implements St
                 //Globals.ARML.setPosition(.5);
                 //Globals.ARMR.setPosition(.5);
                 if (getElapsedStateTime() > 300) {
-                    FrogTeleOpFF.FrightDetection = false;
                     switchState(State.IDLE);
                 }
                 break;
