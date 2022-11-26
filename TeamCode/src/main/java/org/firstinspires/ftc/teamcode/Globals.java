@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.ftccommon.FtcAboutActivity;
 import com.qualcomm.hardware.lynx.LynxDcMotorController;
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -8,25 +7,18 @@ import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
-import org.firstinspires.ftc.teamcode.robotComponents.drivebase.DriveTrainBase;
+import net.frogbots.skystone.drivers.MaxSonarI2CXL;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 
-import org.firstinspires.ftc.teamcode.drivers.MaxSonarI2CXL;
 import org.firstinspires.ftc.teamcode.robotComponents.drivebase.SkyStoneDriveBase;
 
-import ftc.teamcode.FreightFrenzy.FreightFrenzyMainAutoBlue;
-import ftc.teamcode.FreightFrenzy.FreightFrenzyMainAutoBlueStateM;
-import ftc.teamcode.FreightFrenzy.FrogTeleOpFF;
 
-import static ftc.teamcode.FreightFrenzy.FreightFrenzyMainAutoBlueStateM.clearEnc;
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 
 public class Globals {
 
@@ -119,7 +111,7 @@ public class Globals {
     public static void ResetHX() {
         LastX =trackingWheelIntegrator.getX();
         LastY =trackingWheelIntegrator.getY();
-        FreightFrenzyMainAutoBlueStateM.clearEnc();
+
         trackingWheelIntegrator.SetX(0);
         trackingWheelIntegrator.SetY(LastY);
 
