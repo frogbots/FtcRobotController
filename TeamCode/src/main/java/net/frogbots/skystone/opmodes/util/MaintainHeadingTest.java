@@ -9,6 +9,7 @@ import net.frogbots.skystone.meta.opmode.FrogOpMode;
 @TeleOp
 public class MaintainHeadingTest extends FrogOpMode
 {
+
     AccerlationControlledDrivetrainPowerGeneratorForAuto acclCtrl;
 
     @Override

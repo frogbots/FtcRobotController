@@ -33,10 +33,6 @@ public class AutoMecDrive extends LinearOpMode {
 
     SkyStoneDriveBase skyStoneDriveBase;
 
-
-
-
-
     private double maxPos = 1;
     private double minPos = 0;
 
