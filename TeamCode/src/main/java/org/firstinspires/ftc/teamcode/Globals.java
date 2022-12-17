@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.ftccommon.FtcAboutActivity;
 import com.qualcomm.hardware.lynx.LynxDcMotorController;
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -8,20 +7,22 @@ import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
-import org.firstinspires.ftc.teamcode.robotComponents.drivebase.DriveTrainBase;
+import net.frogbots.skystone.drivers.MaxSonarI2CXL;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 
-import org.firstinspires.ftc.teamcode.drivers.MaxSonarI2CXL;
 import org.firstinspires.ftc.teamcode.robotComponents.drivebase.SkyStoneDriveBase;
 
+<<<<<<< HEAD
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
+=======
+
+>>>>>>> 5054900f2dc8e0e431c26be57c9d4263241fb373
 
 public class Globals {
 
@@ -114,6 +115,10 @@ public class Globals {
     public static void ResetHX() {
         LastX =trackingWheelIntegrator.getX();
         LastY =trackingWheelIntegrator.getY();
+<<<<<<< HEAD
+=======
+
+>>>>>>> 5054900f2dc8e0e431c26be57c9d4263241fb373
         trackingWheelIntegrator.SetX(0);
         trackingWheelIntegrator.SetY(LastY);
 
