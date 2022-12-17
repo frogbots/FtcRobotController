@@ -21,6 +21,7 @@
 
 package net.frogbots.skystone.opmodes.util;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import net.frogbots.ftcopmodetunercommon.opmode.TunableLinearOpMode;
@@ -36,7 +37,7 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 import org.openftc.easyopencv.OpenCvPipeline;
-
+@Disabled
 @TeleOp
 public class SkystoneDetector extends TunableLinearOpMode
 {

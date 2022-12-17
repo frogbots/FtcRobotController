@@ -1,10 +1,11 @@
 package net.frogbots.skystone.opmodes.util;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import net.frogbots.skystone.meta.misc.Vector;
-
+@Disabled
 @TeleOp
 public class VectorTest extends LinearOpMode
 {

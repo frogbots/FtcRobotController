@@ -1,11 +1,12 @@
 package net.frogbots.skystone.opmodes.util;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import net.frogbots.skystone.drivers.FrogBNO055;
-
+@Disabled
 @TeleOp
 public class InternalImuTest extends LinearOpMode
 {

@@ -1,6 +1,7 @@
 package ftc.teamcode.FreightFrenzy;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import net.frogbots.skystone.control.AccerlationControlledDrivetrainPowerGeneratorForAuto;
 import net.frogbots.skystone.drivers.MaxSonarI2CXL;
@@ -14,7 +15,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 
 import java.util.ArrayList;
-
+@Disabled
 @Autonomous
 public class AutoMecDriveBlueTest extends FrogOpMode
 {

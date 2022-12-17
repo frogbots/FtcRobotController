@@ -1,10 +1,11 @@
 package net.frogbots.skystone.opmodes.util;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import net.frogbots.skystone.control.MecanumDrive;
 import net.frogbots.skystone.meta.opmode.FrogOpMode;
-
+@Disabled
 @TeleOp
 public class VectorMove extends FrogOpMode
 {

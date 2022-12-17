@@ -1,7 +1,5 @@
 package ftc.teamcode.FreightFrenzy;
 
-import android.database.DatabaseUtils;
-
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -28,7 +26,7 @@ public class AutoMecDriveBlue extends FrogOpMode
 
 
 
-    int signalNum;
+    int signalNum = 1;
     OpenCvCamera phoneCam;
     AprilTagDetectionPipeline aprilTagDetectionPipeline;
 
@@ -50,9 +48,9 @@ public class AutoMecDriveBlue extends FrogOpMode
     AprilTagDetection tagOfInterest = null;
 
     BeamBreakSensor beamBreak;
-    OverheadClaw claw;
-    Dr4bLift lift;
-    AutoNavigation autoNav;
+    OverheadClaw claw = new OverheadClaw();
+    Dr4bLift lift = new Dr4bLift();
+    AutoNavigation autoNav = new AutoNavigation();
     AccerlationControlledDrivetrainPowerGeneratorForAuto acclCtrl;
 
 
@@ -63,7 +61,7 @@ public class AutoMecDriveBlue extends FrogOpMode
         autoNav.RightSonar = hardwareMap.get(MaxSonarI2CXL.class, "RightSonar");
         autoNav.BackSonar = hardwareMap.get(MaxSonarI2CXL.class, "BackSonar");
         //autoNav.FrontSonar = hardwareMap.get(MaxSonarI2CXL.class, "FrontDistance");
-        autoNav.LeftSonar = hardwareMap.get(MaxSonarI2CXL.class, "LeftSonar");
+//        autoNav.LeftSonar = hardwareMap.get(MaxSonarI2CXL.class, "LeftSonar");
         lift.servo1= (Servo) hardwareMap.get(Servo.class, "servo1");
         lift.servo2= (Servo) hardwareMap.get(Servo.class, "servo2");
         claw.clawServo= (Servo) hardwareMap.get(Servo.class, "clawServo");
@@ -72,54 +70,69 @@ public class AutoMecDriveBlue extends FrogOpMode
 
        waitForStart();
 
-       //while (opModeIsActive())
-      // {
 
- //       for(int i = 0; i < 4; i++) {
-   //         double err = gyroUtils.gyroStraight(acclCtrl, .2, 0, .017);
-    //    }
- //       telemetry.addData("signalnum = ", signalNum);
- //       telemetry.update();
 
         signalNum = tagOfInterest.id;
+
+        // right parking
+
+        //autoNav.ForwardtoCone(5,.2, 0);
+        //autoNav.RightDist(20,0);
+        //sleep(1000);
+        //autoNav.RightDist(75,0);
+        lift.MediumJunction();
+        autoNav.ForwardDist(135,0);
+        autoNav.BackDist(106,0);
+        autoNav.RotateAngle(90);
+        autoNav.ForwardtoCone(11,.2,90);
+        robot.driveTrain.stopMotors(); //setMotorPowers(0,0,0,0);
+        sleep(3000 );
+        claw.ClawOpen();
+        sleep(500);
+        claw.ClawClose();
+        autoNav.ForwardtoCone(30,-.2,90);
+        robot.driveTrain.stopMotors();
+        sleep(500);
+        autoNav.RotateAngle(-1);
+        lift.ConeLVL1();
+        sleep(500);
+
+        /*autoNav.ForwardDist(124,0);
+        autoNav.RightDist(20,0);
+        robot.driveTrain.stopMotors();
+        sleep(500);
+        autoNav.RotateAngle(-90);
+        sleep(1000 );
+        claw.ClawOpen();
+        sleep(500);
+        lift.ConeLVL1();
+        autoNav.ForwardtoCone(20,.2,-90);
+        robot.driveTrain.stopMotors(); //setMotorPowers(0,0,0,0);
+        sleep(500);
+        claw.ClawClose();
+        sleep(500);
+        autoNav.ForwardtoCone(50,-.2,-90);
+        robot.driveTrain.stopMotors(); //setMotorPowers(0,0,0,0);*/
+        //autoNav.RotateAngle(-1);
+        //sleep(500 );
+
+
+
+
+// parking code
 
         switch (signalNum) {
 
             case 1:
-                //autoNav.LeftDist(126.54, 0);
-
-                //autoNav.ForwardDist(120.0, 0);
-                lift.ServoPos();
-      //          lift.ConeLVL1();
-                lift.MediumJunction();
-
+               autoNav.Navigate(0, 120, 120);
                 break;
 
             case 2:
-                //autoNav.LeftDist(126.54, 0);
-                //autoNav.ForwardDist(120.0, 0);
-                //autoNav.RightDist(84, 0);
-                //autoNav.RotateAngle(90);
-                claw.ClawOpen();
-        //        claw.ClawClose();
+               autoNav.Navigate(0, 60, 120);
                 break;
 
             case 3:
-   /*             autoNav.ForwardDist(117, 0);
-                autoNav.LeftDist(125,0);
-                autoNav.RightDist(25,0);
-                autoNav.RotateAngle(-160);
-                autoNav.RightLDist(90, -170);
-     */
-                autoNav.Navigate(0,36, 117);
-                autoNav.RotateAngle(-80);
-                robot.driveTrain.stopMotors();
-                claw.ClawOpen();
-                lift.ConeLVL1();
-                //claw.ClawClose();
-
-               // autoNav.Navigate(0,134, 31);
-
+               autoNav.Navigate(0, 20, 120);
                 break;
 
         }
@@ -141,7 +154,6 @@ public class AutoMecDriveBlue extends FrogOpMode
         beamBreak = new BeamBreakSensor();
 
 
-
         autoNav.acclCtrl = acclCtrl;
         autoNav.gyroUtils = gyroUtils;
 
@@ -154,7 +166,7 @@ public class AutoMecDriveBlue extends FrogOpMode
         phoneCam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
             public void onOpened() {
-                phoneCam.startStreaming(720,480 , OpenCvCameraRotation.UPRIGHT);
+                phoneCam.startStreaming(720,480 , OpenCvCameraRotation.UPSIDE_DOWN);
             }
 
             @Override
@@ -162,6 +174,7 @@ public class AutoMecDriveBlue extends FrogOpMode
 
             }
         });
+
 
         int signalNum = SignalNum();
 

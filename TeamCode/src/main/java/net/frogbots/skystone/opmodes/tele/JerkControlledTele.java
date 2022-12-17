@@ -1,5 +1,6 @@
 package net.frogbots.skystone.opmodes.tele;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -8,7 +9,7 @@ import net.frogbots.skystone.hardware.components.drivebase.MotorPowers;
 import net.frogbots.skystone.hardware.components.drivebase.SkyStoneDriveBase;
 
 import net.frogbots.skystone.control.JerkControlledDrivetrain;
-
+@Disabled
 @TeleOp
 public class JerkControlledTele extends LinearOpMode
 {

@@ -2,6 +2,7 @@ package net.frogbots.skystone.opmodes.util;
 
 import com.qualcomm.hardware.lynx.LynxDcMotorController;
 import com.qualcomm.hardware.lynx.LynxModule;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -14,7 +15,7 @@ import net.frogbots.skystone.control.TrackingWheelIntegratorRR_VC;
 
 import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
 import org.firstinspires.ftc.robotcore.internal.ui.UILocation;
-
+@Disabled
 @TeleOp
 public class TrackingWheelTest2 extends LinearOpMode
 {

@@ -21,17 +21,17 @@ public class AutoNavigation {
     public int ConeStack_X = SENSOR_MIN;
     public int ConeStack_Y = 152 - ROBOT_WIDTH / 2;
 
-    public int[] XCoord = {25, 91, 152};
-    public int[] YCoord = {25, 91, 152};
+    public double[] XCoord = {20, 72, 120};
+    public double[] YCoord = {20, 72, 120};
 
     public double curXPos;
     public double curYPos;
     public int curOrientation = 0;
 
-    public int targetXPos = Junction_3_1_X;
-    public int targetYPos = Junction_3_1_Y;
-    public int navX = XCoord[0];
-    public int navY = YCoord[0];
+    public double targetXPos = Junction_3_1_X;
+    public double targetYPos = Junction_3_1_Y;
+    public double navX = XCoord[0];
+    public double navY = YCoord[0];
 
     public GyroUtils gyroUtils;
 
@@ -42,6 +42,11 @@ public class AutoNavigation {
 
     AccerlationControlledDrivetrainPowerGeneratorForAuto acclCtrl;
 
+    public void ForwardtoCone(double t, double power, double Orientation)
+    {   double err;
+        for(int i = 0; i < t; i++)
+            err = gyroUtils.gyroStraight(acclCtrl, power, Orientation, .017);
+    }
 
     public void ForwardDist(double dist, double target) {
         double bcm = 0;
@@ -95,11 +100,9 @@ public class AutoNavigation {
     public void LeftDist(double dist, double target) {
         double rcm = 0;
         rcm = RightSonar.getDistanceSync(35);
-System.out.println("lcm " + rcm);
         while (rcm < dist) {
             double err = gyroUtils.gyroStrafe(acclCtrl, -.2, target, .013);
             rcm = RightSonar.getDistanceSync(35);
-            System.out.println("lcm " + rcm);
         }
 
         // robot.driveTrain.stopMotors();
@@ -121,15 +124,15 @@ System.out.println("lcm " + rcm);
     }
 
     public void RotateAngle(double angle) {
-        double err = gyroUtils.gyroRotate(acclCtrl, angle, .015);
+        double err = gyroUtils.gyroRotate(acclCtrl, angle, .015, .1);
 
         if (angle < 0) {
             while (err < 1) {
-                err = gyroUtils.gyroRotate(acclCtrl, angle, .015);
+                err = gyroUtils.gyroRotate(acclCtrl, angle, .015, .1);
             }
         } else {
             while (err > 1) {
-                err = gyroUtils.gyroRotate(acclCtrl, angle, .015);
+                err = gyroUtils.gyroRotate(acclCtrl, angle, .015, .1);
             }
         }
 
@@ -137,50 +140,134 @@ System.out.println("lcm " + rcm);
         //acclCtrl.clr();
     }
 
-    public void Navigate(int curOrientation, int targetXPos, int targetYPos) {
+    public double getPathPos(double targetPos, double[] paths) {
+
+        int i;
+        double c,c1;
+        double navPos = paths[0];
+
+        for (i = 0; i < paths.length - 1; i++) {
+
+            c = Math.abs(targetPos - paths[i + 1]);
+            c1= Math.abs(targetPos - paths[i]);
+
+            if (c <= c1) {
+                navPos = paths[i+1];
+            }
+
+            System.out.println("getpathpos - navPos =" + navPos);
+
+
+        }
+        return navPos;
+    }
+
+    public void Navigate(int curOrientation, double targetXPos, double targetYPos) {
 
         double curXPos = RightSonar.getDistanceSync();
         double curYPos = BackSonar.getDistanceSync();
 
+        navX = getPathPos(curXPos, XCoord);
+        navY = getPathPos(curYPos,YCoord);
+
+        System.out.println("get to path");
         System.out.println("currXPos " + curXPos);
         System.out.println("currYPos " + curYPos);
-
-        for (int i = 0; i < 3; i++) {
-            if (targetXPos >= XCoord[i]) {
-                navX = XCoord[i];
-            }
-            if (targetYPos >= YCoord[i]) {
-                navY = YCoord[i];
-            }
-
-        }
 
         System.out.println("navX " + navX);
         System.out.println("navY " + navY);
 
-                if (curXPos > navX) {
+            if (curYPos < navY) {
+                ForwardDist(navY, curOrientation);
+            } else if (curYPos > navY) {
+                BackDist(navY,curOrientation);
+            }
+
+
+            if (curXPos > navX) {
                     RightDist(navX, curOrientation);
-                } else {
+                } else if (curXPos < navX) {
                     LeftDist(navX, curOrientation);
                 }
 
-                if (curYPos < navY) {
-                    ForwardDist(navY, curOrientation);
-                } else {
-                    BackDist(navY,curOrientation);
-                }
 
-            if (curXPos > targetXPos) {
-                RightDist(targetXPos, curOrientation);
-            } else {
-                LeftDist(targetXPos, curOrientation);
-            }
+               curXPos = navX; //RightSonar.getDistanceSync();
+               curYPos = navY; //BackSonar.getDistanceSync();
+               System.out.println("get to target");
 
-            if (targetYPos > curYPos) {
-                ForwardDist(targetYPos, curOrientation);
-            } else {
-                BackDist(targetYPos,curOrientation);
-            }
+               System.out.println("currX " + curXPos);
+                System.out.println("currY " + curYPos);
+
+                System.out.println("targetX " + targetXPos);
+                System.out.println("targetY " + targetYPos);
+
+
+        if (targetYPos > curYPos) {
+            ForwardDist(targetYPos, curOrientation);
+        } else if (targetYPos < curYPos){
+            BackDist(targetYPos,curOrientation);
         }
 
+        if (curXPos > targetXPos)
+        {
+            RightDist(targetXPos, curOrientation);
+        } else if (curXPos < targetXPos){
+            LeftDist(targetXPos, curOrientation);
+        }
+        }
+
+    public void LeftNavigate(int curOrientation, double targetXPos, double targetYPos) {
+
+        double curXPos = LeftSonar.getDistanceSync();
+        double curYPos = BackSonar.getDistanceSync();
+
+        navX = getPathPos(curXPos, XCoord);
+        navY = getPathPos(curYPos,YCoord);
+
+        System.out.println("get to path");
+        System.out.println("currXPos " + curXPos);
+        System.out.println("currYPos " + curYPos);
+
+        System.out.println("navX " + navX);
+        System.out.println("navY " + navY);
+
+        if (curYPos < navY) {
+            ForwardDist(navY, curOrientation);
+        } else if (curYPos > navY) {
+            BackDist(navY,curOrientation);
+        }
+
+
+        if (curXPos < navX) {
+            RightLDist(navX, curOrientation);
+        } else if (curXPos > navX) {
+            LeftLDist(navX, curOrientation);
+        }
+
+
+        curXPos = navX; //RightSonar.getDistanceSync();
+        curYPos = navY; //BackSonar.getDistanceSync();
+        System.out.println("get to target");
+
+        System.out.println("currX " + curXPos);
+        System.out.println("currY " + curYPos);
+
+        System.out.println("targetX " + targetXPos);
+        System.out.println("targetY " + targetYPos);
+
+
+        if (targetYPos > curYPos) {
+            ForwardDist(targetYPos, curOrientation);
+        } else if (targetYPos < curYPos){
+            BackDist(targetYPos,curOrientation);
+        }
+
+        if (curXPos < targetXPos)
+        {
+            RightLDist(targetXPos, curOrientation);
+        } else if (curXPos > targetXPos){
+            LeftLDist(targetXPos, curOrientation);
+        }
     }
+
+}

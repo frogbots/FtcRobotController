@@ -94,7 +94,7 @@ public class GyroUtils
     {
         double err = AngleManipulator.manipulateDiscontinuity(target, getHeading());
 
-        System.out.println("Gyro err " + err);
+        //System.out.println("Gyro err " + err);
 
         powers.frontLeft  -= err*Kp;
         powers.rearLeft   -= err*Kp;
@@ -112,7 +112,7 @@ public class GyroUtils
 
         double err = AngleManipulator.manipulateDiscontinuity(target, getHeading());
 
-        System.out.println("setPowersWithHeadingCorrection gyro err " + err);
+        //System.out.println("setPowersWithHeadingCorrection gyro err " + err);
 
         powers.frontLeft  -= err*Kp;
         powers.rearLeft   -= err*Kp;

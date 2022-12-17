@@ -8,12 +8,12 @@ public class OverheadClaw {
     public Servo clawServo;
 
     public void ClawOpen() {
-        while (clawServo.getPosition() < .8)
-          clawServo.setPosition(.8);
+       if (clawServo.getPosition() <= .4)
+          clawServo.setPosition(.4);
         }
 
         public void ClawClose() {
-         while (clawServo.getPosition() > -0.2)
+         if (clawServo.getPosition() >= -0.2)
            clawServo.setPosition(-0.2);
         }
 
