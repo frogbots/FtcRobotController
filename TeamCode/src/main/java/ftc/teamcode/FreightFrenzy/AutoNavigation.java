@@ -1,8 +1,13 @@
 package ftc.teamcode.FreightFrenzy;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
+
 import net.frogbots.skystone.control.AccerlationControlledDrivetrainPowerGeneratorForAuto;
 import net.frogbots.skystone.drivers.MaxSonarI2CXL;
 import net.frogbots.skystone.control.GyroUtils;
+import net.frogbots.skystone.meta.opmode.FrogOpMode;
 
 public class AutoNavigation {
 
@@ -21,8 +26,8 @@ public class AutoNavigation {
     public int ConeStack_X = SENSOR_MIN;
     public int ConeStack_Y = 152 - ROBOT_WIDTH / 2;
 
-    public double[] XCoord = {20, 72, 120};
-    public double[] YCoord = {20, 72, 120};
+    public double[] XCoord = {20, 71, 130};
+    public double[] YCoord = {20, 71, 130};
 
     public double curXPos;
     public double curYPos;
@@ -33,11 +38,17 @@ public class AutoNavigation {
     public double navX = XCoord[0];
     public double navY = YCoord[0];
 
+    public FrogOpMode op;
+
     public GyroUtils gyroUtils;
 
     public MaxSonarI2CXL RightSonar;
     public MaxSonarI2CXL BackSonar;
     public MaxSonarI2CXL LeftSonar;
+    public DcMotorEx RR;
+    public DcMotorEx RL;
+    public DcMotorEx FR;
+    public DcMotorEx FL;
     //public MaxSonarI2CXL FrontSonar;
 
     AccerlationControlledDrivetrainPowerGeneratorForAuto acclCtrl;
@@ -48,11 +59,16 @@ public class AutoNavigation {
             err = gyroUtils.gyroStraight(acclCtrl, power, Orientation, .017);
     }
 
-    public void ForwardDist(double dist, double target) {
+    public void ForwardDist(double dist, double pow ,double target) {
         double bcm = 0;
         bcm = BackSonar.getDistanceSync(35);
-        while (bcm < dist) {
-            double err = gyroUtils.gyroStraight(acclCtrl, .2, target, .017);
+        while (bcm < dist && op.opModeIsActive()) {
+            System.out.println("bcm f = "+bcm);
+            System.out.println("FR = " +FR.getCurrentPosition());
+            System.out.println("FL = " +FL.getCurrentPosition());
+            System.out.println("RR = " +RR.getCurrentPosition());
+            System.out.println("RL = " +RL.getCurrentPosition());
+            double err = gyroUtils.gyroStraight(acclCtrl, pow, target, .017);
             bcm = BackSonar.getDistanceSync();
         }
 
@@ -61,47 +77,50 @@ public class AutoNavigation {
 
     }
 
-    public void BackDist(double dist, double target) {
+    public void BackDist(double dist, double pow, double target) {
         double bcm = 0;
         bcm = BackSonar.getDistanceSync(35);
-        while (bcm > dist) {
-            double err = gyroUtils.gyroStraight(acclCtrl, -0.2, target, .017);
+        while (bcm > dist && op.opModeIsActive()) {
+            System.out.println("bcm b = "+bcm);
+            double err = gyroUtils.gyroStraight(acclCtrl, pow, target, .017);
             bcm = BackSonar.getDistanceSync(35);
         }
         //robot.driveTrain.stopMotors();
         //acclCtrl.clr();
     }
 
-    public void LeftLDist(double dist, double target) {
+    public void LeftLDist(double dist, double pow, double target) {
         double lcm = 0;
         lcm = LeftSonar.getDistanceSync(35);
 
-        while (dist < lcm) {
-            double err = gyroUtils.gyroStrafe(acclCtrl, -.2, 0, .013);
+        while (dist < lcm && op.opModeIsActive()) {
+            double err = gyroUtils.gyroStrafe(acclCtrl, pow, 0, .013);
             lcm = LeftSonar.getDistanceSync(35);
         }
         //robot.driveTrain.stopMotors();
         //acclCtrl.clr();
     }
 
-    public void RightLDist(double dist, double target) {
+    public void RightLDist(double dist, double pow, double target) {
         double lcm = 0;
         lcm = LeftSonar.getDistanceSync(35);
 
 
-        while (dist > lcm) {
-            double err = gyroUtils.gyroStrafe(acclCtrl, .2, target, .013);
+        while (dist > lcm && op.opModeIsActive()) {
+            double err = gyroUtils.gyroStrafe(acclCtrl, pow, target, .013);
             lcm = LeftSonar.getDistanceSync(35);
         }
         //robot.driveTrain.stopMotors();
         //acclCtrl.clr();
     }
 
-    public void LeftDist(double dist, double target) {
+    public void LeftDist(double dist, double pow, double target) {
         double rcm = 0;
         rcm = RightSonar.getDistanceSync(35);
-        while (rcm < dist) {
-            double err = gyroUtils.gyroStrafe(acclCtrl, -.2, target, .013);
+
+        while (rcm < dist && op.opModeIsActive())  {
+            System.out.println("rcm l = "+rcm);
+            double err = gyroUtils.gyroStrafe(acclCtrl, pow, target, .013);
             rcm = RightSonar.getDistanceSync(35);
         }
 
@@ -109,11 +128,12 @@ public class AutoNavigation {
         // acclCtrl.clr();
     }
 
-    public void RightDist(double dist, double target) {
+    public void RightDist(double dist, double pow, double target) {
         double rcm = 0;
         rcm = RightSonar.getDistanceSync(35);
-        while (rcm > dist) {
-            double err = gyroUtils.gyroStrafe(acclCtrl, .2, target, .013);
+        while (rcm > dist && op.opModeIsActive()) {
+            System.out.println("rcm r = "+rcm);
+            double err = gyroUtils.gyroStrafe(acclCtrl, pow, target, .013);
             rcm = RightSonar.getDistanceSync(35);
 
         }
@@ -178,16 +198,16 @@ public class AutoNavigation {
         System.out.println("navY " + navY);
 
             if (curYPos < navY) {
-                ForwardDist(navY, curOrientation);
+                ForwardDist(navY, 2, curOrientation);
             } else if (curYPos > navY) {
-                BackDist(navY,curOrientation);
+                BackDist(navY, -.2, curOrientation);
             }
 
 
             if (curXPos > navX) {
-                    RightDist(navX, curOrientation);
+                    RightDist(navX, .2, curOrientation);
                 } else if (curXPos < navX) {
-                    LeftDist(navX, curOrientation);
+                    LeftDist(navX, .2, curOrientation);
                 }
 
 
@@ -203,16 +223,16 @@ public class AutoNavigation {
 
 
         if (targetYPos > curYPos) {
-            ForwardDist(targetYPos, curOrientation);
+            ForwardDist(targetYPos, .2, curOrientation);
         } else if (targetYPos < curYPos){
-            BackDist(targetYPos,curOrientation);
+            BackDist(targetYPos, -.2, curOrientation);
         }
 
         if (curXPos > targetXPos)
         {
-            RightDist(targetXPos, curOrientation);
+            RightDist(targetXPos, .2, curOrientation);
         } else if (curXPos < targetXPos){
-            LeftDist(targetXPos, curOrientation);
+            LeftDist(targetXPos, -.2, curOrientation);
         }
         }
 
@@ -232,16 +252,16 @@ public class AutoNavigation {
         System.out.println("navY " + navY);
 
         if (curYPos < navY) {
-            ForwardDist(navY, curOrientation);
+            ForwardDist(navY, .2,curOrientation);
         } else if (curYPos > navY) {
-            BackDist(navY,curOrientation);
+            BackDist(navY, -.2, curOrientation);
         }
 
 
         if (curXPos < navX) {
-            RightLDist(navX, curOrientation);
+            RightLDist(navX, -.2, curOrientation);
         } else if (curXPos > navX) {
-            LeftLDist(navX, curOrientation);
+            LeftLDist(navX, .2, curOrientation);
         }
 
 
@@ -257,16 +277,16 @@ public class AutoNavigation {
 
 
         if (targetYPos > curYPos) {
-            ForwardDist(targetYPos, curOrientation);
+            ForwardDist(targetYPos, .2, curOrientation);
         } else if (targetYPos < curYPos){
-            BackDist(targetYPos,curOrientation);
+            BackDist(targetYPos, -.2, curOrientation);
         }
 
         if (curXPos < targetXPos)
         {
-            RightLDist(targetXPos, curOrientation);
+            RightLDist(targetXPos, -.2, curOrientation);
         } else if (curXPos > targetXPos){
-            LeftLDist(targetXPos, curOrientation);
+            LeftLDist(targetXPos, .2, curOrientation);
         }
     }
 

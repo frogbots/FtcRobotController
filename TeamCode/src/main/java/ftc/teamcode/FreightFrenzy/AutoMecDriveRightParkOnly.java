@@ -77,20 +77,20 @@ public class AutoMecDriveRightParkOnly extends FrogOpMode
 
             case 1:
                // autoNav.Navigate(0, 120, 58);
-                autoNav.ForwardDist(60, 0);
-                autoNav.LeftDist(120, 0);
+                autoNav.ForwardDist(60, .2, 0);
+                autoNav.LeftDist(120, 0.2, 0);
 
                 break;
 
             case 2:
                 //autoNav.Navigate(0, 70, 58);
-                autoNav.ForwardDist(60, 0);
+                autoNav.ForwardDist(60, .2, 0);
                 break;
 
             case 3:
                // autoNav.Navigate(0, 20, 58);
-                autoNav.ForwardDist(60, 0);
-                autoNav.RightDist(20, 0);
+                autoNav.ForwardDist(60, .2,0);
+                autoNav.RightDist(20, .2, 0);
                 break;
 
         }

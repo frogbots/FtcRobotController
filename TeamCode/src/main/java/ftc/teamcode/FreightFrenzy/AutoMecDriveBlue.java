@@ -81,8 +81,8 @@ public class AutoMecDriveBlue extends FrogOpMode
         //sleep(1000);
         //autoNav.RightDist(75,0);
         lift.MediumJunction();
-        autoNav.ForwardDist(135,0);
-        autoNav.BackDist(106,0);
+        autoNav.ForwardDist(135, .2,0);
+        autoNav.BackDist(106, -.2,0);
         autoNav.RotateAngle(90);
         autoNav.ForwardtoCone(11,.2,90);
         robot.driveTrain.stopMotors(); //setMotorPowers(0,0,0,0);
