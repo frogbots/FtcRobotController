@@ -1,6 +1,7 @@
 package ftc.teamcode.FreightFrenzy;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import net.frogbots.skystone.control.AccerlationControlledDrivetrainPowerGeneratorForAuto;
@@ -60,6 +61,11 @@ public class AutoMecDriveLeft extends FrogOpMode
     {
       //  autoNav.RightSonar = hardwareMap.get(MaxSonarI2CXL.class, "RightSonar");
         autoNav.BackSonar = hardwareMap.get(MaxSonarI2CXL.class, "BackSonar");
+        autoNav.RR = hardwareMap.get(DcMotorEx.class, "RR");
+        autoNav.RL = hardwareMap.get(DcMotorEx.class, "RL");
+        autoNav.FR = hardwareMap.get(DcMotorEx.class, "FR");
+        autoNav.FL = hardwareMap.get(DcMotorEx.class, "FL");
+
         //autoNav.FrontSonar = hardwareMap.get(MaxSonarI2CXL.class, "FrontDistance");
         autoNav.LeftSonar = hardwareMap.get(MaxSonarI2CXL.class, "LeftSonar");
         lift.servo1= (Servo) hardwareMap.get(Servo.class, "servo1");
@@ -77,22 +83,23 @@ public class AutoMecDriveLeft extends FrogOpMode
         // right parking
 
         lift.LowJunction();
-        autoNav.ForwardDist(135,0);
-        autoNav.BackDist(106,0);
+        autoNav.ForwardDist(135, .2,0);
+        autoNav.BackDist(110, -.2, 0);
         autoNav.RotateAngle(-90);
         lift.MediumJunction ();
-        autoNav.ForwardtoCone(35 ,.2,-90);
+        autoNav.ForwardtoCone(30 ,.2,-90);
         robot.driveTrain.stopMotors(); //setMotorPowers(0,0,0,0);
         sleep(2000 );
         claw.ClawOpen();
         sleep(1000);
         claw.ClawClose();
-        autoNav.ForwardtoCone(45 ,-.2,-90);
+        autoNav.ForwardtoCone(50 ,-.2,-90);
         robot.driveTrain.stopMotors();
         sleep(500);
         autoNav.RotateAngle(1);
+        sleep(250);
         lift.ConeLVL1();
-        autoNav.ForwardDist(120,0);
+        autoNav.ForwardDist(120, .2, 0);
 
 
 
@@ -105,7 +112,7 @@ public class AutoMecDriveLeft extends FrogOpMode
                 break;
 
             case 2:
-                autoNav.LeftNavigate(0, 75, 75);
+                autoNav.LeftNavigate(0, 72, 75);
                 break;
 
             case 3:

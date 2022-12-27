@@ -73,8 +73,9 @@ public class AutoMecDriveRight extends FrogOpMode
         signalNum = tagOfInterest.id;
 
         lift.LowJunction();
-        autoNav.ForwardDist(135,0);
-        autoNav.BackDist(106,0);
+        autoNav.ForwardDist(135, .2, 0);
+        autoNav.BackDist(106, -.2, 0);
+
         autoNav.RotateAngle(90);
         lift.MediumJunction ();
         autoNav.ForwardtoCone(30,.2,90);
@@ -88,7 +89,7 @@ public class AutoMecDriveRight extends FrogOpMode
         sleep(500);
         autoNav.RotateAngle(-1);
         lift.ConeLVL1();
-        autoNav.ForwardDist(120,0);
+        autoNav.ForwardDist(120,.2, 0);
 
 // parking code
 
@@ -123,7 +124,7 @@ public class AutoMecDriveRight extends FrogOpMode
         lift = new Dr4bLift();
         claw = new OverheadClaw();
         beamBreak = new BeamBreakSensor();
-
+        autoNav.op = this;
 
         autoNav.acclCtrl = acclCtrl;
         autoNav.gyroUtils = gyroUtils;
