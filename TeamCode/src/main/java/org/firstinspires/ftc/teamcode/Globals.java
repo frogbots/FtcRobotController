@@ -18,11 +18,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 import org.firstinspires.ftc.teamcode.robotComponents.drivebase.SkyStoneDriveBase;
 
-<<<<<<< HEAD
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
-=======
-
->>>>>>> 5054900f2dc8e0e431c26be57c9d4263241fb373
 
 public class Globals {
 
@@ -115,10 +111,6 @@ public class Globals {
     public static void ResetHX() {
         LastX =trackingWheelIntegrator.getX();
         LastY =trackingWheelIntegrator.getY();
-<<<<<<< HEAD
-=======
-
->>>>>>> 5054900f2dc8e0e431c26be57c9d4263241fb373
         trackingWheelIntegrator.SetX(0);
         trackingWheelIntegrator.SetY(LastY);
 

@@ -255,6 +255,8 @@ public class MecDrive2 extends LinearOpMode {
             }
             telemetry.addData("lPos", servo1.getPosition());
             telemetry.addData("rPos:", servo2.getPosition());
+            telemetry.addData("sen1", BackSonar.getDistance());
+            telemetry.addData("sen2", RightSonar.getDistance());
 
 
         }
