@@ -1,6 +1,5 @@
 package ftc.teamcode.FreightFrenzy;
 
-//import com.qualcomm.hardware.lynx.LynxDcMotorController;
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -20,52 +19,35 @@ import org.firstinspires.ftc.teamcode.Globals;
 import org.firstinspires.ftc.teamcode.TrackingWheelIntegrator;
 import org.firstinspires.ftc.teamcode.control.MecanumDrive;
 import org.firstinspires.ftc.teamcode.robotComponents.drivebase.SkyStoneDriveBase;
-@Disabled
+
 @TeleOp
-public class MecDriveSDM extends LinearOpMode {
+public class MecDriveSDM0 extends LinearOpMode {
 
 
     private DcMotorEx FL;
     private DcMotorEx FR;
     private DcMotorEx RL;
     private DcMotorEx RR;
-    private Servo servo1;
-    private Servo servo2;
+
     private Servo clawServo;
-    //private DistanceSensor beambreak;
     private double leftStickX;
     private double leftStickY;
     private double rightStickX;
-    private boolean beamstat;
 
 
 
+    RunToPosition rtp = new RunToPosition();
     SkyStoneDriveBase skyStoneDriveBase;
 
 
     AccerlationControlledDrivetrainPowerGeneratorForAuto acclCtrl;
     TrackingWheelIntegrator trackingWheelIntegrator = new TrackingWheelIntegrator();
 
-    private double maxPos = 1;
-    private double minPos = 0;
-
-
 //code for lift
 
-    public double lPos = 0.2;
-    public double rPos = 0.81;
+    public int curPos = 0;
 
-    public double coneLVL = .24;
-    public double rconeLVL = 0.77;
 
-    public double lowJunc = 0.45;
-    public double rlowJunc = 0.56;
-
-    public double midJunc = 0.7;
-    public double rmidJunc = 0.31;
-
-    public double highJunc = 0.28;
-    public double rhighJunc =  0.738;
 
     //claw Servo init + var
 
@@ -87,8 +69,7 @@ public class MecDriveSDM extends LinearOpMode {
         FR= (DcMotorEx) hardwareMap.get(DcMotor.class, "FR");
         RL= (DcMotorEx) hardwareMap.get(DcMotor.class, "RL");
         RR= (DcMotorEx) hardwareMap.get(DcMotor.class, "RR");
-        servo1= (Servo) hardwareMap.get(Servo.class, "servo1");
-        servo2= (Servo) hardwareMap.get(Servo.class, "servo2");
+        rtp.liftMotor= (DcMotorEx) hardwareMap.get(DcMotor.class, "liftMotor");
         clawServo= (Servo) hardwareMap.get(Servo.class, "clawServo");
         //beambreak= (DistanceSensor) hardwareMap.get(DistanceSensor.class, "beambreak");
         skyStoneDriveBase = new SkyStoneDriveBase();
@@ -103,6 +84,8 @@ public class MecDriveSDM extends LinearOpMode {
         Globals.odoModule = module;
         Globals.opMode = this;
         Globals.robot.enableBrake(true);
+        rtp.liftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rtp.liftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         boolean AutomationLastState = false;
         acclCtrl = new AccerlationControlledDrivetrainPowerGeneratorForAuto(.08, 1, .05);
@@ -115,16 +98,13 @@ public class MecDriveSDM extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            if (gamepad2.x) {         //If button is pressed Auto aline will run. if not normally gamepad works
+            if (gamepad1.x) {         //If button is pressed Auto aline will run. if not normally gamepad works
                 if (!AutomationLastState) {
                     //clearEnc();
                     trackingWheelIntegrator.setFirstTrackingVal(0,0);
                     //buildTrajectory();
-
                 }
                 AutomationLastState = true;
-
-
             }
             else {
                 runGamepad();
@@ -155,7 +135,6 @@ public class MecDriveSDM extends LinearOpMode {
             leftStickY = gamepad1.left_stick_y;
         } else {
             leftStickY = 0;
-
         }
         if (gamepad1.right_stick_x > .01) {
             rightStickX = gamepad1.right_stick_x;
@@ -163,27 +142,11 @@ public class MecDriveSDM extends LinearOpMode {
             rightStickX = gamepad1.right_stick_x;
         } else {
             rightStickX = 0;
-
         }
 
-
-        /* telemetry.addData("beam", beambreak.getDistance(DistanceUnit.CM));
-        telemetry.addData("brokenbeam", beamstat);
-        if (beambreak.getDistance(DistanceUnit.CM) < 20) {
-            beamstat = true;
-        } */
-
         telemetry.update();
-/*
-        if(lPos > lowJunc && rPos < rlowJunc) {
-            if(gamepad1.right_bumper) {
-                lPos = coneLVL;
-                rPos = rconeLVL;
-            }
 
-        } else if(lPos >= coneLVL && rPos is <= rconeLVL  ) {
-
-*/
+        //Claw
         if (gamepad1.triangle) {
             clawServo.setPosition(-0.2);
         }
@@ -191,52 +154,36 @@ public class MecDriveSDM extends LinearOpMode {
             clawServo.setPosition(.4);
         }
 
-        //if (lPos > 0.33) {
-          //  if (beambreak.getDistance(DistanceUnit.CM) > 10 && beambreak.getDistance(DistanceUnit.CM) < 16)
-             //   gamepad1.rumble(250);
-        //}
-
         //lift positions
 
-        servo2.setPosition(rPos);
-        servo1.setPosition(lPos);
-
+        //cone pickup level
         if(gamepad1.right_bumper) {
-            lPos = coneLVL;
-            rPos = rconeLVL;
 
-
-       }
-
+        }
+        //low junction
         if(gamepad1.left_bumper) {
-            lPos = lowJunc;
-            rPos = rlowJunc;
 
         }
+        //medium junction
         if(gamepad1.left_trigger == 1) {
-            lPos = midJunc;
-            rPos= rmidJunc;
+
         }
+        //high junction
+        if(gamepad1.right_trigger == 1) {
 
-
-        // if(gamepad1.right_trigger == 1) {
-        // lPos = highJunc;
-        // rPos = rhighJunc;
-        //}
-
+        }
+        //manual UP movement
         if (gamepad1.dpad_up) {
-            if (lPos < maxPos) {
-                lPos = lPos + .02;
-                rPos = rPos - .02;
-
+            if(rtp.liftMotor.getCurrentPosition() < 3000) {
+                curPos = curPos + 10;
+                rtp.RunToPos(curPos, .5);
             }
-
         }
-
+        //manual DOWN movement
         if (gamepad1.dpad_down) {
-            if (lPos > minPos) {
-                lPos = lPos - .02;
-                rPos = rPos + .02 ;
+            if(rtp.liftMotor.getCurrentPosition() > 0) {
+                curPos = curPos - 10;
+                rtp.RunToPos(curPos, -.5);
             }
         }
 
@@ -260,11 +207,9 @@ public class MecDriveSDM extends LinearOpMode {
                     rightStickX * .5 ); // Turn
 
         }
-              telemetry.addData("lPos", servo1.getPosition());
-            telemetry.addData("rPos:", servo2.getPosition());
-
-
-        }
-
+       telemetry.addData("LiftEnc", rtp.liftMotor.getCurrentPosition());
     }
+
+}
+
 
