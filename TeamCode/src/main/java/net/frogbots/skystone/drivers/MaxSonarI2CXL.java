@@ -115,19 +115,12 @@ public class MaxSonarI2CXL extends I2cDeviceSynchDevice<I2cDeviceSynch>
         }
         else
         {
+            //Globals.CRITICAL_ERR_ABORT_NOW = true;
+            //Globals.requestOpModeStop();
+            //throw new AbortAutoNowException("Ultrasonic sensor returned garbage data after 3 attempts, killing program");
+            //return 0;
             if(numAttempts >= 3)
-            {
                 throw new RuntimeException("Ultrasonic sensor returned garbage data after 3 attempts, killing program");
-                //Globals.CRITICAL_ERR_ABORT_NOW = true;
-                //Globals.requestOpModeStop();
-                //throw new AbortAutoNowException("Ultrasonic sensor returned garbage data after 3 attempts, killing program");
-<<<<<<< HEAD:TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drivers/MaxSonarI2CXL.java
-                //return 0;
-=======
-
-                return 0;
->>>>>>> 5054900f2dc8e0e431c26be57c9d4263241fb373:TeamCode/src/main/java/net/frogbots/skystone/drivers/MaxSonarI2CXL.java
-            }
             else
             {
                 numAttempts++;
