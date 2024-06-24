@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.control;
 
+import androidx.annotation.NonNull;
+
 import org.firstinspires.ftc.teamcode.robotComponents.drivebase.DriveTrain;
 import org.firstinspires.ftc.teamcode.robotComponents.drivebase.MotorPowers;
 import org.firstinspires.ftc.teamcode.robotComponents.drivebase.SkyStoneDriveBase;
@@ -9,13 +11,17 @@ import org.firstinspires.ftc.teamcode.robotComponents.drivebase.SkyStoneDriveBas
  * Created by michael on 11/12/18.
  */
 
-public class MecanumDrive
+public class MecanumDrive // For driving mecanum wheels, functions: cartesian, MotorPowers, polar, limit
 {
+    // Function cartesian
+    // Returns void
+    // Uses function calsCartesian to set the motor power (speed)
     public static void cartesian(SkyStoneDriveBase driveTrain, double main, double strafe, double turn)
     {
        driveTrain.setMotorPowers(calcCartesian(main, strafe, turn));
     }
 
+    // Uses holonomic formula (main +/- strafe +/- turn) to determine the power needed for the motors
     public static MotorPowers calcCartesian(double main, double strafe, double turn)
     {
         MotorPowers motorPowers = new MotorPowers();
@@ -57,7 +63,7 @@ public class MecanumDrive
 
         //Compute the power for each wheel
         powers.frontLeft  =  mag * Math.sin(dirRad) + rot;
-        powers.frontRight = -mag * Math.cos(dirRad) - rot; //Negate mag because motor should already be set to reverse
+        powers.frontRight = -mag * Math.cos(dirRad) - rot; //Negative mag because motor should already be set to reverse
         powers.rearLeft   = -mag * Math.cos(dirRad) + rot; // ^ ^ ^
         powers.rearRight  =  mag * Math.sin(dirRad) - rot;
 

@@ -33,7 +33,6 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 import org.openftc.easyopencv.OpenCvPipeline;
 
-import ftc.teamcode.FreightFrenzy.TSEDetectionRed;
 
 /*
  * This version of the internal camera example uses EasyOpenCV's interface to the
@@ -66,9 +65,7 @@ public class RedCameraExample extends LinearOpMode
          * of a frame from the camera. Note that switching pipelines on-the-fly
          * (while a streaming session is in flight) *IS* supported.
          */
-        TSEDetectionRed TSEPipline = new TSEDetectionRed();
 
-        phoneCam.setPipeline(TSEPipline);
 
         /*
          * Open the connection to the camera device. New in v1.4.0 is the ability
@@ -126,12 +123,6 @@ public class RedCameraExample extends LinearOpMode
             telemetry.addData("Pipeline time ms", phoneCam.getPipelineTimeMs());
             telemetry.addData("Overhead time ms", phoneCam.getOverheadTimeMs());
             telemetry.addData("Theoretical max FPS", phoneCam.getCurrentPipelineMaxFps());
-            telemetry.addData("Density", TSEPipline.GetLastDensity());
-            telemetry.addData("Density", TSEPipline.GetLastDensity2());
-            telemetry.addData("Control", TSEPipline.GetLastControlDensity());
-            telemetry.addData("Position", TSEPipline.GetPosition());
-            telemetry.addData("Position", TSEPipline.GetLastRatioDensity());
-            telemetry.addData("Position", TSEPipline.GetLastRatioDensity2());
             telemetry.update();
 
             /*

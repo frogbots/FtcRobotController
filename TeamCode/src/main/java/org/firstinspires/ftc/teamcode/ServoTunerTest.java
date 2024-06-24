@@ -1,10 +1,11 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import net.frogbots.ftcopmodetunercommon.opmode.TunableLinearOpMode;
-
+@Disabled
 @TeleOp
 public class ServoTunerTest extends TunableLinearOpMode
 {
